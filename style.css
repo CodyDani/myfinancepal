@@ -18,7 +18,7 @@
   background: #f9f5f0;
   font-family: "Heebo", sans-serif;
   padding: 30px 15px;
-  max-width: 550px;
+  max-width: 720px;
   margin: auto;
 }
 
@@ -67,6 +67,12 @@
   cursor: pointer;
 }
 
+.container section.inputAmount button:hover {
+  background-color: var(--primary-color);
+  color: var(--accent);
+  border: 1px solid #594e41;
+}
+
 .container section.rules {
   background-color: var(--accent);
   color: var(--secondary-color);
@@ -82,6 +88,11 @@
   border-radius: 15px;
 }
 
+.container section.categories .categoriesHeading span {
+  font-weight: bold;
+  font-size: 20px;
+}
+
 .container section.categories ul {
   display: flex;
   flex-direction: column;
@@ -89,7 +100,8 @@
   gap: 10px;
 }
 
-.container section.categories ul li {
+.container section.categories ul li,
+.container section.categories .categoriesHeading {
   list-style-type: none;
   display: grid;
   grid-template-columns: 50% 20% 30%;
@@ -100,6 +112,18 @@
   margin-bottom: 5px;
 }
 
-/* .container section.categories ul li span {
-  text-align: left;
-} */
+.container section.categories button {
+  border: none;
+  padding: 8px 18px;
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+  font-size: 20px;
+  border: 1px solid #594e41;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.container section.categories button:hover {
+  background: var(--accent);
+  color: var(--secondary-color);
+}
