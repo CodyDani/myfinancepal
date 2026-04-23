@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #f9f5f0;
+  --secondary-color: #ffffff;
+  --accent: #1f1f23;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #f9f5f0;
+  font-family: "Heebo", sans-serif;
+  padding: 30px 15px;
+  max-width: 550px;
+  margin: auto;
+}
+
+.container section.welcomeMsg {
+}
+
+.container section.welcomeMsg h1 {
+  font-size: 25px;
+}
+
+.container section.welcomeMsg p {
+  font-size: 16px;
+}
+
+.container section.inputAmount {
+  max-width: 550px;
+}
+
+.container .inputAmount label {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.container section.inputAmount input {
+  border: none;
+  padding: 8px 18px;
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+  font-size: 20px;
+  border: 1px solid #594e41;
+}
+
+.container section.inputAmount input:focus {
+  border: none;
+  background-color: var(--primary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.container section.inputAmount button {
+  background: var(--accent);
+  color: var(--secondary-color);
+  border: none;
+  padding: 8px 18px;
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.container section.rules {
+  background-color: var(--accent);
+  color: var(--secondary-color);
+  padding: 4px 8px;
+  text-align: center;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.container section.categories {
+  background: var(--secondary-color);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.container section.categories ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.container section.categories ul li {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 50% 20% 30%;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--primary-color);
+  padding: 4px 10px;
+  margin-bottom: 5px;
+}
+
+/* .container section.categories ul li span {
+  text-align: left;
+} */
