@@ -210,7 +210,8 @@ class UIManager {
     });
 
     // Menu toggle
-    document.querySelector('.icon')?.addEventListener('click', () => this.toggleMenu());
+    document.querySelectorAll('.icon').forEach(icon => icon.addEventListener('click', () => this.toggleMenu()));
+    document.querySelectorAll('.icon2').forEach(icon => icon.addEventListener('click', () => this.closeMenu()));
 
     // Income input
     this.elements.inputEl?.addEventListener("keydown", (event) => {
@@ -449,7 +450,18 @@ class FinanceApp {
   }
 }
 
+// Expose a global app instance so inline nav toggles work after hosting
+let financeApp = null;
+
+function toggleMenu() {
+  financeApp?.uiManager?.toggleMenu();
+}
+
+function closeMenu() {
+  financeApp?.uiManager?.closeMenu();
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-  new FinanceApp();
+  financeApp = new FinanceApp();
 });
