@@ -13,6 +13,7 @@ const budgetAvailableEl = document.getElementById("budget-available");
 const budgetedNeedsList = document.getElementById("budgeted-needs-list");
 const expenseForm = document.getElementById("expense-form");
 const expenseAccountEl = document.getElementById("expense-account");
+const expenseAmountEl = document.getElementById("expense-amount");
 const expensesList = document.getElementById("expenses-list");
 
 let balanceArr = [
@@ -41,6 +42,21 @@ let rules = [
   "Never Borrow to spend on Liability (Bad debt)",
   "Never Spend outside budget when opay cannot comfortably take it",
 ];
+
+function saveData() {
+  localStorage.setItem('balanceArr', JSON.stringify(balanceArr));
+  localStorage.setItem('budgetNeeds', JSON.stringify(budgetNeeds));
+  localStorage.setItem('expenses', JSON.stringify(expenses));
+}
+
+function loadData() {
+  const balanceData = localStorage.getItem('balanceArr');
+  if (balanceData) balanceArr = JSON.parse(balanceData);
+  const budgetData = localStorage.getItem('budgetNeeds');
+  if (budgetData) budgetNeeds = JSON.parse(budgetData);
+  const expensesData = localStorage.getItem('expenses');
+  if (expensesData) expenses = JSON.parse(expensesData);
+}
 
 function getPortionConfig(income) {
   return [
@@ -166,6 +182,7 @@ function recordCategories() {
   displayBalance();
   renderExpenseAccounts();
   updateBudgetPage();
+  saveData();
 }
 
 function renderExpenseAccounts() {
@@ -254,6 +271,7 @@ function recordExpense(event) {
   displayBalance();
   renderExpenses();
   updateBudgetPage();
+  saveData();
 }
 
 function renderExpenses() {
@@ -321,6 +339,7 @@ budgetForm.addEventListener("submit", (event) => {
   budgetNeeds.push({ name, amount, priority, addedAt: Date.now() });
   budgetForm.reset();
   updateBudgetPage();
+  saveData();
 });
 
 expenseForm.addEventListener("submit", recordExpense);
@@ -332,5 +351,9 @@ function displayRules() {
   }, 6000);
 }
 
-displayRules();
+loadData();
+displayBalance();
+updateBudgetPage();
+renderExpenses();
 renderExpenseAccounts();
+displayRules();
