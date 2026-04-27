@@ -20,14 +20,14 @@
           <p>Keep your Finances up by keeping to your systems and structures</p>
         </div>
         <div class="navigation-btn">
-          <ul class="nav-links" id="myLinks">
+          <ul class="nav-links">
             <a href="javascript:void(0);" class="icon2" onclick="toggleMenu()">
               &#10006;
             </a>
             <li><button onclick="showHomePage()">Home</button></li>
             <li><button onclick="showBalance()">Balance</button></li>
-            <li><button>Budgeted Needs</button></li>
-            <li><button>Expenses</button></li>
+            <li><button onclick="showBudgetPage()">Budgeted Needs</button></li>
+            <li><button onclick="showExpenses()">Expenses</button></li>
           </ul>
           <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
             &#9776;
@@ -36,13 +36,8 @@
       </section>
 
       <section class="inputAmount">
-        <label for="income">Add Income:</label>
-        <input
-          id="input-amount"
-          type="number"
-          placeholder="#50,000"
-          id="income"
-        />
+        <label for="input-amount">Add Income:</label>
+        <input id="input-amount" type="number" placeholder="#50,000" />
         <button id="input-submit">Submit</button>
       </section>
 
@@ -50,33 +45,11 @@
         <p id="rule">-- Never Borrow to spend on Liability (Bad debt) --</p>
       </section>
 
-      <section class="categories" style="display: none">
+      <section class="categories" id="allocation-section" style="display: none">
         <div class="categoriesHeading">
           <span>Portion</span><span>Amount</span><span>Send to</span>
         </div>
-        <ul id="categories-ul">
-          <!-- <li>
-            <span>Tithe</span> <span>#4,000</span> <span>Church Acc</span>
-          </li>
-          <li>
-            <span>Giving </span> <span>#12,000</span> <span>Palmpay Acc</span>
-          </li>
-          <li>
-            <span>Investment & Saving for Budgeted Needs</span>
-            <span>#12,000</span> <span>Moniepoint Acc</span>
-          </li>
-          <li>
-            <span>House needs</span> <span>#4,000</span> <span>Kuda Acc</span>
-          </li>
-          <li>
-            <span>Data & Airtime</span> <span>#4,000</span>
-            <span>Smartcash Acc</span>
-          </li>
-          <li>
-            <span>Transportation & Emergencies</span> <span>#4,000</span>
-            <span>Opay Acc</span>
-          </li> -->
-        </ul>
+        <ul id="categories-ul"></ul>
         <button id="record-btn">Record</button>
       </section>
     </div>
@@ -88,56 +61,112 @@
           <p>Know how much you have across all portions so far</p>
         </div>
         <div class="navigation-btn">
-          <ul class="nav-links" id="myLinks">
+          <ul class="nav-links">
             <a href="javascript:void(0);" class="icon2" onclick="toggleMenu()">
               &#10006;
             </a>
             <li><button onclick="showHomePage()">Home</button></li>
             <li><button onclick="showBalance()">Balance</button></li>
-            <li><button>Budgeted Needs</button></li>
-            <li><button>Expenses</button></li>
+            <li><button onclick="showBudgetPage()">Budgeted Needs</button></li>
+            <li><button onclick="showExpenses()">Expenses</button></li>
           </ul>
           <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
             &#9776;
           </a>
         </div>
       </section>
-      <section class="portion-cards" id="portion-cards">
-        <!-- <section class="portion-card">
-          <p>Giving</p>
-          <p>
-            <span>Total:</span>
-            <span class="portion-amount">#1,000,000.00</span>
-          </p>
-        </section>
+      <section class="portion-cards" id="portion-cards"></section>
+    </div>
 
-        <section class="portion-card">
-          <p>Investment & Saving for Budgeted Needs</p>
-          <p>
-            <span>Total:</span> <span class="portion-amount">#500,000.00</span>
-          </p>
-        </section>
+    <div class="container" id="budget-page" style="display: none">
+      <section class="welcomeMsg">
+        <div class="message">
+          <h1>Budgeted Needs</h1>
+          <p>Track needs and see what the savings portion can cover first.</p>
+        </div>
+        <div class="navigation-btn">
+          <ul class="nav-links">
+            <a href="javascript:void(0);" class="icon2" onclick="toggleMenu()">
+              &#10006;
+            </a>
+            <li><button onclick="showHomePage()">Home</button></li>
+            <li><button onclick="showBalance()">Balance</button></li>
+            <li><button onclick="showBudgetPage()">Budgeted Needs</button></li>
+            <li><button onclick="showExpenses()">Expenses</button></li>
+          </ul>
+          <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
+            &#9776;
+          </a>
+        </div>
+      </section>
 
-        <section class="portion-card">
-          <p>House needs</p>
-          <p>
-            <span>Total:</span> <span class="portion-amount">#250,000.00</span>
-          </p>
-        </section>
+      <section class="inputAmount">
+        <form id="budget-form">
+          <label for="budget-name">Need name:</label>
+          <input id="budget-name" type="text" placeholder="Emergency fund" required />
+          <label for="budget-amount">Proposed amount:</label>
+          <input id="budget-amount" type="number" placeholder="#15,000" required />
+          <label for="budget-priority">Priority:</label>
+          <select id="budget-priority">
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+          <button type="submit">Add Need</button>
+        </form>
+      </section>
 
-        <section class="portion-card">
-          <p>Data & Airtime</p>
-          <p>
-            <span>Total:</span> <span class="portion-amount">#100,000.00</span>
-          </p>
-        </section>
+      <section class="budget-summary">
+        <p>Investment savings available: <strong id="budget-available">#0</strong></p>
+      </section>
 
-        <section class="portion-card">
-          <p>Transportation & Emergencies</p>
-          <p>
-            <span>Total:</span> <span class="portion-amount">#200,000.00</span>
-          </p>
-        </section> -->
+      <section class="categories">
+        <div class="categoriesHeading">
+          <span>Need</span><span>Amount</span><span>Status</span>
+        </div>
+        <ul id="budgeted-needs-list"></ul>
+      </section>
+    </div>
+
+    <div class="container" id="expenses-page" style="display: none">
+      <section class="welcomeMsg">
+        <div class="message">
+          <h1>Expenses</h1>
+          <p>Record spending and deduct from the right portion account.</p>
+        </div>
+        <div class="navigation-btn">
+          <ul class="nav-links">
+            <a href="javascript:void(0);" class="icon2" onclick="toggleMenu()">
+              &#10006;
+            </a>
+            <li><button onclick="showHomePage()">Home</button></li>
+            <li><button onclick="showBalance()">Balance</button></li>
+            <li><button onclick="showBudgetPage()">Budgeted Needs</button></li>
+            <li><button onclick="showExpenses()">Expenses</button></li>
+          </ul>
+          <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
+            &#9776;
+          </a>
+        </div>
+      </section>
+
+      <section class="inputAmount">
+        <form id="expense-form">
+          <label for="expense-amount">Spend amount:</label>
+          <input id="expense-amount" type="number" placeholder="#5,000" required />
+          <label for="expense-account">From account:</label>
+          <select id="expense-account"></select>
+          <label for="expense-description">Description:</label>
+          <input id="expense-description" type="text" placeholder="Transport" required />
+          <button type="submit">Record Expense</button>
+        </form>
+      </section>
+
+      <section class="categories">
+        <div class="categoriesHeading">
+          <span>Account</span><span>Amount</span><span>Reference</span>
+        </div>
+        <ul id="expenses-list"></ul>
       </section>
     </div>
 

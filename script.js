@@ -2,188 +2,335 @@ const inputEl = document.getElementById("input-amount");
 const ruleEl = document.getElementById("rule");
 const categoriesUl = document.getElementById("categories-ul");
 const inputSubmitBtn = document.getElementById("input-submit");
-const categoriesUlContainer = document.querySelector(".categories");
+const allocationSection = document.getElementById("allocation-section");
 const recordBtn = document.getElementById("record-btn");
 const homePage = document.getElementById("home-page");
 const balancePage = document.getElementById("balance-page");
+const budgetPage = document.getElementById("budget-page");
+const expensesPage = document.getElementById("expenses-page");
+const budgetForm = document.getElementById("budget-form");
+const budgetAvailableEl = document.getElementById("budget-available");
+const budgetedNeedsList = document.getElementById("budgeted-needs-list");
+const expenseForm = document.getElementById("expense-form");
+const expenseAccountEl = document.getElementById("expense-account");
+const expensesList = document.getElementById("expenses-list");
 
 let balanceArr = [
-  {
-    portion: "Tithe",
-    amount: 0,
-    desination: "Church Acc",
-  },
-  {
-    portion: "Giving",
-    amount: 0,
-    desination: "Palmpay Acc",
-  },
+  { portion: "Tithe", amount: 0, destination: "Church Acc" },
+  { portion: "Giving", amount: 0, destination: "Palmpay Acc" },
   {
     portion: "Investment & Saving for Budgeted Needs",
     amount: 0,
-    desination: "Moniepoint Acc",
+    destination: "Moniepoint Acc",
   },
-  {
-    portion: "House needs",
-    amount: 0,
-    desination: "Kuda Acc",
-  },
-  {
-    portion: "Data & Airtime",
-    amount: 0,
-    desination: "Smartcash Acc",
-  },
+  { portion: "House needs", amount: 0, destination: "Kuda Acc" },
+  { portion: "Data & Airtime", amount: 0, destination: "Smartcash Acc" },
   {
     portion: "Transportation & Emergencies",
     amount: 0,
-    desination: "Opay Acc",
+    destination: "Opay Acc",
   },
 ];
-let categoriesArr;
+
+let categoriesArr = [];
+let budgetNeeds = [];
+let expenses = [];
+
 let rules = [
   "10% Tithe from every income",
   "Never Borrow to spend on Liability (Bad debt)",
   "Never Spend outside budget when opay cannot comfortably take it",
 ];
 
-inputEl.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    inputSubmitBtn.click();
-  } else return;
-});
-
-inputSubmitBtn.addEventListener("click", () => {
-  if (inputEl.value.length === 0) return;
-  categoriesArr = [
+function getPortionConfig(income) {
+  return [
     {
       portion: "Tithe",
-      amount: (inputEl.value * 10) / 100,
-      desination: "Church Acc",
+      amount: (income * 10) / 100,
+      destination: "Church Acc",
     },
     {
       portion: "Giving",
-      amount: (inputEl.value * 30) / 100,
-      desination: "Palmpay Acc",
+      amount: (income * 30) / 100,
+      destination: "Palmpay Acc",
     },
     {
       portion: "Investment & Saving for Budgeted Needs",
-      amount: (inputEl.value * 30) / 100,
-      desination: "Moniepoint Acc",
+      amount: (income * 30) / 100,
+      destination: "Moniepoint Acc",
     },
     {
       portion: "House needs",
-      amount: (inputEl.value * 10) / 100,
-      desination: "Kuda Acc",
+      amount: (income * 10) / 100,
+      destination: "Kuda Acc",
     },
     {
       portion: "Data & Airtime",
-      amount: (inputEl.value * 10) / 100,
-      desination: "Smartcash Acc",
+      amount: (income * 10) / 100,
+      destination: "Smartcash Acc",
     },
     {
       portion: "Transportation & Emergencies",
-      amount: (inputEl.value * 10) / 100,
-      desination: "Opay Acc",
+      amount: (income * 10) / 100,
+      destination: "Opay Acc",
     },
   ];
-
-  inputEl.value = "";
-
-  if (categoriesArr) {
-    categoriesUlContainer.style.display = "block";
-    displayPortions();
-  }
-});
-
-function displayPortions() {
-  categoriesUl.innerHTML = "";
-  categoriesArr.forEach((item) => {
-    categoriesUl.innerHTML += `            <li>
-            <span>${item.portion}</span> <span>#${formatMoney(item.amount)}</span> <span>${item.desination}</span>
-          </li>`;
-  });
 }
 
-recordBtn.addEventListener("click", () => {
-  recordCategories();
-});
-
-function recordCategories() {
-  // categoriesArr.forEach((aItem) => {
-  //   const bItem = balanceArr.find((b) => b.portion === aItem.portion);
-  //   if (bItem) {
-  //     bItem.amount += aItem.amount; // Add amounts if names match
-  //   } else {
-  //     balanceArr.push({ ...aItem }); // Optional: add if it doesn't exist
-  //   }
-  // });
-
-  // console.log(balanceArr);
-
-  const bMap = new Map(balanceArr.map((item) => [item.portion, item]));
-  categoriesArr.forEach((aItem) => {
-    if (bMap.has(aItem.portion)) {
-      bMap.get(aItem.portion).amount += aItem.amount;
-    }
-  });
-
-  displayBalance();
-}
-
-function displayBalance() {
-  const portionCardContainer = document.getElementById("portion-cards");
-
-  const balance = balanceArr
-    .map(
-      (item) =>
-        `<section class="portion-card">
-        <p>${item.portion}</p>
-        <p>
-          <span>Total:</span> <span class="portion-amount">#${formatMoney(item.amount)}</span>
-        </p>
-      </section>`,
-    )
-    .join("");
-
-  portionCardContainer.innerHTML = balance;
-}
-
-function showHomePage() {
-  homePage.style.display = "block";
-  balancePage.style.display = "none";
-}
-
-function showBalance() {
-  homePage.style.display = "none";
-  balancePage.style.display = "block";
-  displayBalance();
-}
-
-//Format Money
 function formatMoney(amount) {
   return Number(amount).toLocaleString("en-US");
 }
 
-//Humburger Function
-function toggleMenu() {
-  let x = document.getElementById("myLinks");
-  let icon = document.querySelector(".icon");
-  if (x.className === "nav-links") {
-    x.className += " active";
-    icon.style.display = "none";
-  } else {
-    x.className = "nav-links";
-    icon.style.display = "block";
+function getVisibleNav() {
+  return document.querySelector(
+    ".container:not([style*='display: none']) .nav-links",
+  );
+}
+
+function hideAllPages() {
+  homePage.style.display = "none";
+  balancePage.style.display = "none";
+  budgetPage.style.display = "none";
+  expensesPage.style.display = "none";
+}
+
+function showPage(page) {
+  hideAllPages();
+  page.style.display = "block";
+
+  if (page === balancePage) {
+    displayBalance();
+  }
+
+  if (page === budgetPage) {
+    updateBudgetPage();
+  }
+
+  if (page === expensesPage) {
+    renderExpenseAccounts();
+    renderExpenses();
   }
 }
 
-//Rules Display
+function showHomePage() {
+  showPage(homePage);
+}
+
+function showBalance() {
+  showPage(balancePage);
+}
+
+function showBudgetPage() {
+  showPage(budgetPage);
+}
+
+function showExpenses() {
+  showPage(expensesPage);
+}
+
+function displayPortions() {
+  categoriesUl.innerHTML = categoriesArr
+    .map(
+      (item) =>
+        `<li><span>${item.portion}</span><span>#${formatMoney(item.amount)}</span><span>${item.destination}</span></li>`,
+    )
+    .join("");
+}
+
+function displayBalance() {
+  const portionCardContainer = document.getElementById("portion-cards");
+  portionCardContainer.innerHTML = balanceArr
+    .map(
+      (item) =>
+        `<section class="portion-card"><p>${item.portion}</p><p><span>Total:</span><span class="portion-amount">#${formatMoney(item.amount)}</span></p></section>`,
+    )
+    .join("");
+}
+
+function recordCategories() {
+  if (!categoriesArr.length) {
+    return;
+  }
+
+  categoriesArr.forEach((category) => {
+    const existing = balanceArr.find(
+      (item) => item.portion === category.portion,
+    );
+    if (existing) {
+      existing.amount += category.amount;
+    }
+  });
+
+  categoriesArr = [];
+  allocationSection.style.display = "none";
+  displayBalance();
+  renderExpenseAccounts();
+  updateBudgetPage();
+}
+
+function renderExpenseAccounts() {
+  expenseAccountEl.innerHTML = balanceArr
+    .map((item) => `<option value="${item.portion}">${item.portion}</option>`)
+    .join("");
+}
+
+function getInvestmentAvailable() {
+  const investment = balanceArr.find(
+    (item) => item.portion === "Investment & Saving for Budgeted Needs",
+  );
+  return investment ? investment.amount : 0;
+}
+
+function computeBudgetStatuses() {
+  const priorities = { High: 1, Medium: 2, Low: 3 };
+  const needs = [...budgetNeeds].sort((a, b) => {
+    const priorityDiff = priorities[a.priority] - priorities[b.priority];
+    return priorityDiff || a.addedAt - b.addedAt;
+  });
+
+  let available = getInvestmentAvailable();
+  return needs.map((need) => {
+    const status = available >= need.amount ? "Can cover" : "Pending";
+    if (status === "Can cover") {
+      available -= need.amount;
+    }
+    return { ...need, status };
+  });
+}
+
+function displayBudgetNeeds() {
+  const needsWithStatus = computeBudgetStatuses();
+  budgetedNeedsList.innerHTML = needsWithStatus
+    .map(
+      (need) =>
+        `<li><span>${need.name}</span><span>#${formatMoney(need.amount)}</span><span>${need.status}</span></li>`,
+    )
+    .join("");
+
+  if (!budgetNeeds.length) {
+    budgetedNeedsList.innerHTML = `<li style="grid-template-columns: 1fr;">No needs saved yet.</li>`;
+  }
+}
+
+function updateBudgetPage() {
+  budgetAvailableEl.textContent = `#${formatMoney(getInvestmentAvailable())}`;
+  displayBudgetNeeds();
+}
+
+function recordExpense(event) {
+  event.preventDefault();
+
+  const amount = Number(expenseAmountEl.value);
+  const account = expenseAccountEl.value;
+  const description = document
+    .getElementById("expense-description")
+    .value.trim();
+
+  if (!amount || amount <= 0 || !description) {
+    alert("Please enter a valid expense amount and description.");
+    return;
+  }
+
+  const accountItem = balanceArr.find((item) => item.portion === account);
+  if (!accountItem) {
+    alert("Please select a valid account.");
+    return;
+  }
+
+  if (amount > accountItem.amount) {
+    alert("Not enough funds in that portion to cover this expense.");
+    return;
+  }
+
+  accountItem.amount -= amount;
+  expenses.push({
+    account,
+    amount,
+    description,
+    date: new Date().toLocaleString(),
+  });
+
+  expenseForm.reset();
+  displayBalance();
+  renderExpenses();
+  updateBudgetPage();
+}
+
+function renderExpenses() {
+  expensesList.innerHTML = expenses
+    .map(
+      (item) =>
+        `<li><span>${item.account}</span><span>#${formatMoney(item.amount)}</span><span>${item.description}</span></li>`,
+    )
+    .join("");
+
+  if (!expenses.length) {
+    expensesList.innerHTML = `<li style="grid-template-columns: 1fr;">No expenses recorded yet.</li>`;
+  }
+}
+
+function toggleMenu() {
+  const nav = getVisibleNav();
+  const icon = document.querySelector(".icon");
+  if (!nav) {
+    return;
+  }
+
+  if (nav.classList.contains("active")) {
+    nav.classList.remove("active");
+    if (icon) icon.style.display = "block";
+  } else {
+    nav.classList.add("active");
+    if (icon) icon.style.display = "none";
+  }
+}
+
+inputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    inputSubmitBtn.click();
+  }
+});
+
+inputSubmitBtn.addEventListener("click", () => {
+  const income = Number(inputEl.value);
+  if (!income || income <= 0) {
+    alert("Enter a valid income amount.");
+    return;
+  }
+
+  categoriesArr = getPortionConfig(income);
+  allocationSection.style.display = "block";
+  displayPortions();
+  inputEl.value = "";
+});
+
+recordBtn.addEventListener("click", recordCategories);
+budgetForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const name = document.getElementById("budget-name").value.trim();
+  const amount = Number(document.getElementById("budget-amount").value);
+  const priority = document.getElementById("budget-priority").value;
+
+  if (!name || !amount || amount <= 0) {
+    alert("Please add a valid need name and amount.");
+    return;
+  }
+
+  budgetNeeds.push({ name, amount, priority, addedAt: Date.now() });
+  budgetForm.reset();
+  updateBudgetPage();
+});
+
+expenseForm.addEventListener("submit", recordExpense);
+
 function displayRules() {
-  const eachRule = setInterval(() => {
+  setInterval(() => {
     const randomIdx = Math.floor(Math.random() * rules.length);
     ruleEl.textContent = `-- ${rules[randomIdx]} --`;
   }, 6000);
 }
 
 displayRules();
+renderExpenseAccounts();
