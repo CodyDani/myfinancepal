@@ -65,7 +65,9 @@ A comprehensive personal finance management application that helps me allocate m
    - `script.js` - Application logic and functionality
    - `manifest.json` - PWA manifest for app installation
    - `service-worker.js` - Service worker for offline functionality
-   - `icon-192.png` & `icon-512.png` - App icons (192x192 and 512x512 PNGs)
+   - `favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png` - Browser tab icons
+   - `apple-touch-icon.png` - iOS home screen icon
+   - `icon-192.png` & `icon-512.png` - PWA installation icons
 3. **Open**: Open `index.html` in any modern web browser
 4. **Install as PWA** (optional):
    - On mobile: Look for "Add to Home Screen" option in browser menu
@@ -77,7 +79,7 @@ A comprehensive personal finance management application that helps me allocate m
 - **HTTPS**: Required for production deployment (local development works without)
 - **Modern Browser**: Chrome 70+, Firefox 65+, Safari 12+, Edge 79+
 - **Service Worker Support**: Most modern browsers support PWAs
-- **App Icons**: Create 192x192 and 512x512 PNG icons and place them in the root directory
+- **Icons**: All required icons are included in the project
 
 ## Usage
 
