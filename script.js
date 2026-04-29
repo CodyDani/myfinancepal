@@ -114,6 +114,14 @@ function showPage(page) {
   hideAllPages();
   page.style.display = "block";
 
+  // Close the menu if it's open
+  const nav = getVisibleNav();
+  if (nav && nav.classList.contains("active")) {
+    nav.classList.remove("active");
+    const icon = document.querySelector(".icon");
+    if (icon) icon.style.display = "block";
+  }
+
   if (page === balancePage) {
     displayBalance();
   }
