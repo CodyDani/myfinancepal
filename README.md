@@ -2,6 +2,16 @@
 
 A comprehensive personal finance management application that helps me allocate my incomes, track budgets, and manage my expenses according to structured financial principles. Now available as a Progressive Web App (PWA) for enhanced mobile experience.
 
+## 🚀 Live Demo
+
+Try the app online: **[https://myfinance-pal.netlify.app/](https://myfinance-pal.netlify.app/)**
+
+**Features available online:**
+- ✅ Full PWA functionality (installable on mobile)
+- ✅ Offline support
+- ✅ Responsive design across all devices
+- ✅ All core features working
+
 ## Features
 
 ### Income Allocation
@@ -58,6 +68,15 @@ A comprehensive personal finance management application that helps me allocate m
 
 ## Installation & Setup
 
+### Option 1: Access Online (Recommended)
+Simply visit: **[https://myfinance-pal.netlify.app/](https://myfinance-pal.netlify.app/)**
+
+- No installation required
+- Full PWA features available
+- Works on any device with a modern browser
+
+### Option 2: Run Locally
+
 1. **Clone or Download**: Place all files in the same directory
 2. **Required Files**:
    - `index.html` - Main application structure
@@ -76,7 +95,7 @@ A comprehensive personal finance management application that helps me allocate m
 
 ### PWA Requirements
 
-- **HTTPS**: Required for production deployment (local development works without)
+- **HTTPS**: ✅ Available on hosted version (local development works without)
 - **Modern Browser**: Chrome 70+, Firefox 65+, Safari 12+, Edge 79+
 - **Service Worker Support**: Most modern browsers support PWAs
 - **Icons**: All required icons are included in the project
@@ -121,6 +140,16 @@ A comprehensive personal finance management application that helps me allocate m
 - **Home Screen Installation**: Install like a native app
 - **Standalone Mode**: No browser UI when installed
 - **Automatic Updates**: Service worker updates app in background
+
+## Deployment
+
+The app is hosted on **Netlify** at: [https://myfinance-pal.netlify.app/](https://myfinance-pal.netlify.app/)
+
+**Hosting Features:**
+- ✅ HTTPS enabled for full PWA functionality
+- ✅ Global CDN for fast loading worldwide
+- ✅ Automatic deployments from GitHub
+- ✅ Custom domain support
 
 ## Browser Support
 
