@@ -97,13 +97,38 @@ function formatMoney(amount) {
   return Number(amount).toLocaleString("en-US");
 }
 
+function getVisiblePage() {
+  return document.querySelector('.container:not([style*="display: none"])');
+}
+
 function getVisibleNav() {
   return document.querySelector(
     ".container:not([style*='display: none']) .nav-links",
   );
 }
 
+function setActiveNavItem(currentPage) {
+  const allButtons = document.querySelectorAll('.nav-links li button');
+  allButtons.forEach(btn => btn.classList.remove('active'));
+
+  let activeButtonText = '';
+  if (currentPage === homePage) activeButtonText = 'Home';
+  else if (currentPage === balancePage) activeButtonText = 'Balance';
+  else if (currentPage === budgetPage) activeButtonText = 'Budgeted Needs';
+  else if (currentPage === expensesPage) activeButtonText = 'Expenses';
+
+  if (activeButtonText) {
+    const activeButton = Array.from(allButtons).find(btn => btn.textContent === activeButtonText);
+    if (activeButton) activeButton.classList.add('active');
+  }
+}
+
+function closeAllMenus() {
+  document.querySelectorAll('.nav-links.active').forEach(nav => nav.classList.remove('active'));
+}
+
 function hideAllPages() {
+  closeAllMenus();
   homePage.style.display = "none";
   balancePage.style.display = "none";
   budgetPage.style.display = "none";
@@ -114,13 +139,14 @@ function showPage(page) {
   hideAllPages();
   page.style.display = "block";
 
-  // Close the menu if it's open
+  // Close the menu if it's open on the visible page
   const nav = getVisibleNav();
   if (nav && nav.classList.contains("active")) {
     nav.classList.remove("active");
-    const icon = document.querySelector(".icon");
-    if (icon) icon.style.display = "block";
   }
+
+  // Highlight active menu item on desktop
+  setActiveNavItem(page);
 
   if (page === balancePage) {
     displayBalance();
@@ -297,18 +323,11 @@ function renderExpenses() {
 
 function toggleMenu() {
   const nav = getVisibleNav();
-  const icon = document.querySelector(".icon");
   if (!nav) {
     return;
   }
 
-  if (nav.classList.contains("active")) {
-    nav.classList.remove("active");
-    if (icon) icon.style.display = "block";
-  } else {
-    nav.classList.add("active");
-    if (icon) icon.style.display = "none";
-  }
+  nav.classList.toggle("active");
 }
 
 inputEl.addEventListener("keydown", (event) => {
