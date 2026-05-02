@@ -245,6 +245,10 @@ function computeBudgetStatuses() {
 
   let available = getInvestmentAvailable();
   return needs.map((need) => {
+    if (need.completed) {
+      return { ...need, status: "Completed" };
+    }
+
     const status = available >= need.amount ? "Can cover" : "Pending";
     if (status === "Can cover") {
       available -= need.amount;
@@ -253,13 +257,79 @@ function computeBudgetStatuses() {
   });
 }
 
+function editBudgetNeed(index) {
+  const need = budgetNeeds[index];
+  const updatedName = prompt("Edit need name:", need.name)?.trim();
+  if (!updatedName) return;
+
+  const updatedAmount = Number(
+    prompt("Edit need amount:", need.amount?.toString()),
+  );
+  if (!updatedAmount || updatedAmount <= 0) {
+    alert("Please enter a valid amount.");
+    return;
+  }
+
+  const updatedPriority = prompt(
+    "Edit priority (High, Medium, Low):",
+    need.priority,
+  )?.trim();
+  if (
+    !updatedPriority ||
+    !["High", "Medium", "Low"].includes(updatedPriority)
+  ) {
+    alert("Priority must be High, Medium, or Low.");
+    return;
+  }
+
+  budgetNeeds[index] = {
+    ...need,
+    name: updatedName,
+    amount: updatedAmount,
+    priority: updatedPriority,
+  };
+  updateBudgetPage();
+  saveData();
+}
+
+function toggleBudgetComplete(index) {
+  budgetNeeds[index].completed = !budgetNeeds[index].completed;
+  updateBudgetPage();
+  saveData();
+}
+
+function deleteBudgetNeed(index) {
+  if (!confirm("Delete this budget need?")) return;
+  budgetNeeds.splice(index, 1);
+  updateBudgetPage();
+  saveData();
+}
+
 function displayBudgetNeeds() {
   const needsWithStatus = computeBudgetStatuses();
   budgetedNeedsList.innerHTML = needsWithStatus
-    .map(
-      (need) =>
-        `<li><span>${need.name}</span><span>#${formatMoney(need.amount)}</span><span>${need.status}</span></li>`,
-    )
+    .map((need, index) => {
+      const completedClass = need.completed ? " budget-completed" : "";
+      const actionLabel = need.completed ? "Unmark" : "Complete";
+      return `
+        <li class="budget-item${completedClass}">
+          <span>${need.name}</span>
+          <span>#${formatMoney(need.amount)}</span>
+          <span>${need.status}</span>
+          <span class="action-buttons">
+            <button class="edit-btn" onclick="editBudgetNeed(${index})">
+              Edit
+            </button>
+            <button class="toggle-complete-btn" onclick="toggleBudgetComplete(${index})">
+              ${actionLabel}
+            </button>
+            <button class="delete-btn" onclick="deleteBudgetNeed(${index})">
+              Delete
+            </button>
+          </span>
+        </li>
+      `;
+    })
     .join("");
 
   if (!budgetNeeds.length) {
@@ -367,7 +437,13 @@ budgetForm.addEventListener("submit", (event) => {
     return;
   }
 
-  budgetNeeds.push({ name, amount, priority, addedAt: Date.now() });
+  budgetNeeds.push({
+    name,
+    amount,
+    priority,
+    completed: false,
+    addedAt: Date.now(),
+  });
   budgetForm.reset();
   updateBudgetPage();
   saveData();
