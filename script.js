@@ -18,7 +18,7 @@ const expensesList = document.getElementById("expenses-list");
 
 let balanceArr = [
   { portion: "Tithe", amount: 0, destination: "Church Acc" },
-  { portion: "Giving", amount: 0, destination: "Palmpay Acc" },
+  { portion: "Giving", amount: 0, destination: "Blazz Acc" },
   {
     portion: "Investment & Saving for Budgeted Needs",
     amount: 0,
@@ -68,7 +68,7 @@ function getPortionConfig(income) {
     {
       portion: "Giving",
       amount: (income * 30) / 100,
-      destination: "Palmpay Acc",
+      destination: "Blazz Acc",
     },
     {
       portion: "Investment & Saving for Budgeted Needs",
@@ -108,23 +108,27 @@ function getVisibleNav() {
 }
 
 function setActiveNavItem(currentPage) {
-  const allButtons = document.querySelectorAll('.nav-links li button');
-  allButtons.forEach(btn => btn.classList.remove('active'));
+  const allButtons = document.querySelectorAll(".nav-links li button");
+  allButtons.forEach((btn) => btn.classList.remove("active"));
 
-  let activeButtonText = '';
-  if (currentPage === homePage) activeButtonText = 'Home';
-  else if (currentPage === balancePage) activeButtonText = 'Balance';
-  else if (currentPage === budgetPage) activeButtonText = 'Budgeted Needs';
-  else if (currentPage === expensesPage) activeButtonText = 'Expenses';
+  let activeButtonText = "";
+  if (currentPage === homePage) activeButtonText = "Home";
+  else if (currentPage === balancePage) activeButtonText = "Balance";
+  else if (currentPage === budgetPage) activeButtonText = "Budgeted Needs";
+  else if (currentPage === expensesPage) activeButtonText = "Expenses";
 
   if (activeButtonText) {
-    const activeButton = Array.from(allButtons).find(btn => btn.textContent === activeButtonText);
-    if (activeButton) activeButton.classList.add('active');
+    const activeButton = Array.from(allButtons).find(
+      (btn) => btn.textContent === activeButtonText,
+    );
+    if (activeButton) activeButton.classList.add("active");
   }
 }
 
 function closeAllMenus() {
-  document.querySelectorAll('.nav-links.active').forEach(nav => nav.classList.remove('active'));
+  document
+    .querySelectorAll(".nav-links.active")
+    .forEach((nav) => nav.classList.remove("active"));
 }
 
 function hideAllPages() {
