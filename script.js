@@ -259,37 +259,60 @@ function computeBudgetStatuses() {
 
 function editBudgetNeed(index) {
   const need = budgetNeeds[index];
-  const updatedName = prompt("Edit need name:", need.name)?.trim();
-  if (!updatedName) return;
+  const listItem = budgetedNeedsList.children[index];
 
-  const updatedAmount = Number(
-    prompt("Edit need amount:", need.amount?.toString()),
-  );
-  if (!updatedAmount || updatedAmount <= 0) {
-    alert("Please enter a valid amount.");
-    return;
+  if (listItem.classList.contains("editing")) {
+    // Save changes
+    const nameInput = listItem.querySelector(".edit-name");
+    const amountInput = listItem.querySelector(".edit-amount");
+    const prioritySelect = listItem.querySelector(".edit-priority");
+
+    const updatedName = nameInput.value.trim();
+    const updatedAmount = Number(amountInput.value);
+    const updatedPriority = prioritySelect.value;
+
+    if (!updatedName || !updatedAmount || updatedAmount <= 0) {
+      alert("Please enter valid values.");
+      return;
+    }
+
+    budgetNeeds[index] = {
+      ...need,
+      name: updatedName,
+      amount: updatedAmount,
+      priority: updatedPriority,
+    };
+    updateBudgetPage();
+    saveData();
+  } else {
+    // Enter edit mode
+    const spans = listItem.querySelectorAll("span:not(.action-buttons)");
+    const nameSpan = spans[0];
+    const amountSpan = spans[1];
+    const statusSpan = spans[2];
+
+    nameSpan.innerHTML = `<input type="text" class="edit-name" value="${need.name}">`;
+    amountSpan.innerHTML = `<input type="number" class="edit-amount" value="${need.amount}">`;
+    statusSpan.innerHTML = `
+      <select class="edit-priority">
+        <option value="High" ${need.priority === "High" ? "selected" : ""}>High</option>
+        <option value="Medium" ${need.priority === "Medium" ? "selected" : ""}>Medium</option>
+        <option value="Low" ${need.priority === "Low" ? "selected" : ""}>Low</option>
+      </select>
+    `;
+
+    const actionButtons = listItem.querySelector(".action-buttons");
+    actionButtons.innerHTML = `
+      <button class="save-edit-btn" onclick="editBudgetNeed(${index})">Save</button>
+      <button class="cancel-edit-btn" onclick="cancelEditBudgetNeed(${index})">Cancel</button>
+    `;
+
+    listItem.classList.add("editing");
   }
+}
 
-  const updatedPriority = prompt(
-    "Edit priority (High, Medium, Low):",
-    need.priority,
-  )?.trim();
-  if (
-    !updatedPriority ||
-    !["High", "Medium", "Low"].includes(updatedPriority)
-  ) {
-    alert("Priority must be High, Medium, or Low.");
-    return;
-  }
-
-  budgetNeeds[index] = {
-    ...need,
-    name: updatedName,
-    amount: updatedAmount,
-    priority: updatedPriority,
-  };
+function cancelEditBudgetNeed(index) {
   updateBudgetPage();
-  saveData();
 }
 
 function toggleBudgetComplete(index) {
@@ -317,14 +340,14 @@ function displayBudgetNeeds() {
           <span>#${formatMoney(need.amount)}</span>
           <span>${need.status}</span>
           <span class="action-buttons">
-            <button class="edit-btn" onclick="editBudgetNeed(${index})">
-              Edit
+            <button class="edit-btn" onclick="editBudgetNeed(${index})" title="Edit this need">
+              ✏️
             </button>
-            <button class="toggle-complete-btn" onclick="toggleBudgetComplete(${index})">
-              ${actionLabel}
+            <button class="toggle-complete-btn" onclick="toggleBudgetComplete(${index})" title="${actionLabel} this need">
+              ${need.completed ? "↩️" : "✅"}
             </button>
-            <button class="delete-btn" onclick="deleteBudgetNeed(${index})">
-              Delete
+            <button class="delete-btn" onclick="deleteBudgetNeed(${index})" title="Delete this need">
+              🗑️
             </button>
           </span>
         </li>

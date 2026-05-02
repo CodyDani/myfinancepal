@@ -258,7 +258,7 @@ body {
 }
 
 .categories ul li span:nth-child(4) {
-  text-align: right;
+  text-align: center;
 }
 
 .budget-item.budget-completed span {
@@ -268,25 +268,56 @@ body {
 
 .action-buttons {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
 }
 
 .action-buttons button {
   border: 1px solid rgba(31, 31, 35, 0.12);
-  border-radius: 10px;
+  border-radius: 6px;
   background: transparent;
   color: var(--accent);
-  padding: 8px 10px;
-  font-size: 0.9rem;
+  padding: 4px 6px;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: var(--transition);
+  max-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .action-buttons button:hover {
   background: var(--accent);
   color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.budget-item.editing .action-buttons button {
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  min-width: 70px;
+  height: auto;
+}
+
+.budget-item.editing input,
+.budget-item.editing select {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: var(--secondary-color);
+}
+
+.budget-item.editing input:focus,
+.budget-item.editing select:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .categories button {
