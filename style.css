@@ -247,6 +247,7 @@ body {
   padding: 10px 0;
   border-bottom: 1px solid #eee;
   align-items: center;
+  justify-content: center;
 }
 
 .categories ul li span:nth-child(2) {
